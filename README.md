@@ -1,18 +1,17 @@
-import java.util.Scanner;
-import java.io.FileWriter;
 import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.FileWriter;
+import java.util.Scanner;
 
-public class {
+public class SimpleTextEditor {
+    private static final String FILE_NAME = "textfile.txt";
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Меню:");
-            System.out.println("1. Записати до файлу");
-            System.out.println("2. Прочитати вміст файлу");
-            System.out.println("3. Вийти з редактора");
+            System.out.println("1. Записати у файл");
+            System.out.println("2. Прочитати файл");
+            System.out.println("3. Вийти");
 
             String choice = scanner.nextLine();
 
@@ -21,43 +20,39 @@ public class {
             } else if (choice.equals("2")) {
                 readFromFile();
             } else if (choice.equals("3")) {
-                System.out.println("Вихід з редактора");
+                System.out.println("До побачення!");
                 break;
             } else {
-                System.out.println("Невірний вибір");
+                System.out.println("Невірний вибір. Спробуйте ще раз.");
             }
         }
     }
 
-    public static void writeToFile(Scanner scanner) {
+    private static void writeToFile(Scanner scanner) {
+        System.out.print("Введіть текст: ");
+        String text = scanner.nextLine();
+
         try {
-            FileWriter writer = new FileWriter("data.txt", false);
-            System.out.println("Введіть рядки для запису. Щоб завершити ");
-            while (true) {
-                String line = scanner.nextLine();
-                if (line.isEmpty()) break;
-                writer.write(line + "\n");
-            }
+            FileWriter writer = new FileWriter(FILE_NAME, true);
+            writer.write(text + "");
             writer.close();
-            System.out.println("Дані записано у файл.");
-        } catch (IOException e) {
+            System.out.println("Текст збережено.");
+        } catch (Exception e) {
             System.out.println("Помилка запису у файл.");
         }
     }
-public static void readFromFile() {
+
+    private static void readFromFile() {
         try {
-            FileReader fileReader = new FileReader("data.txt");
-            BufferedReader reader = new BufferedReader(fileReader);
-
-            String line;
+            FileReader reader = new FileReader(FILE_NAME);
+            int character;
             System.out.println("Вміст файлу:");
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+            while ((character = reader.read()) != -1) {
+                System.out.print((char) character);
             }
-
             reader.close();
-        } catch (IOException e) {
-            System.out.println("Помилка читання з файлу або файл порожній.");
+        } catch (Exception e) {
+            System.out.println("Файл не знайдено або не можна прочитати.");
         }
     }
 }
